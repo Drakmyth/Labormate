@@ -71,20 +71,48 @@ jobs:
         with:
           name: package
 
-      - name: Parse Project Id
+      - name: Retrieve changelog
+        id: retrieve_changelog
+        run: gh release view ${{ needs.package.outputs.version }} --json body -q ".body" --repo Drakmyth/Labormate > changelog.txt
+
+      - name: Parse interface version
+        id: parse_interface
+        run: |
+          INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
+          echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
+
+      - name: Parse project id
         id: parse_projectid
         run: |
           PROJECTID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
           echo "projectid=$PROJECTID" >> $GITHUB_OUTPUT
 
+      - name: Retrieve game version id
+        id: retrieve_versionid
+        run: |
+          INTERFACE="${{ steps.parse_interface.outputs.interface }}"
+          curl -s -X GET "https://wow.curseforge.com/api/game/versions" \
+            -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
+          VERSIONID=$(jq \
+            --arg interface "$INTERFACE" \
+            -r '.[] | select(.apiVersion == $interface) | .id' versions.json)
+          echo "versionid=$VERSIONID" >> $GITHUB_OUTPUT
+
       - name: Publish to CurseForge
         run: |
+          CHANGELOG=$(cat changelog.txt)
+          JSON=$(jq -n \
+            --arg changelog "$CHANGELOG" \
+            --arg changelog_type "markdown" \
+            --arg display_name "${{ needs.package.outputs.version }}" \
+            --arg game_versions [${{ steps.retrieve_versionid.outputs.versionid }}]
+            --arg release_type "release"
+            '{changelog: $changelog, changelogType: $changelog_type, displayName: $display_name, gameVersions: $game_versions, releaseType: $release_type}'
+          )
           curl -X POST "https://wow.curseforge.com/api/projects/${{ steps.parse_projectid.outputs.projectid }}/upload-file" \
-          -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" \
-          -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
-          -F "changelog=Automated release" \
-          -F "changelog_type=markdown" \
-          -F "display_name=Labormate-${{ needs.package.outputs.version }}"
+            -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" \
+            -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
+            -F "metadata=$JSON"
         env:
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
 
