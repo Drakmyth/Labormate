@@ -40,7 +40,7 @@ jobs:
           mkdir -p release/Labormate
           cp *.lua *.toc *.xml release/Labormate/
           cp -r assets/ release/Labormate/assets/
-          (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip -C Labormate/)
+          (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip Labormate/)
 
       - name: Upload package
         uses: actions/upload-artifact@v4
