@@ -113,10 +113,10 @@ jobs:
             --arg changelog "$CHANGELOG" \
             --arg changelog_type "markdown" \
             --arg display_name "${{ needs.package.outputs.version }}" \
-            --arg game_versions [${{ steps.retrieve_versionid.outputs.versionid }}] \
+            --argjson game_versions "[${{ steps.retrieve_versionid.outputs.versionid }}]" \
             --arg release_type "release" \
             '{changelog: $changelog, changelogType: $changelog_type, displayName: $display_name, gameVersions: $game_versions, releaseType: $release_type}')
-          curl -X POST "https://wow.curseforge.com/api/projects/${{ needs.package.outputs.curseforgeid }}/upload-file" \
+          curl -f -X POST "https://wow.curseforge.com/api/projects/${{ needs.package.outputs.curseforgeid }}/upload-file" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" \
             -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
             -F "metadata=$JSON"
