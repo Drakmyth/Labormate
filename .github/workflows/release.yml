@@ -15,15 +15,29 @@ jobs:
   package:
     runs-on: ubuntu-latest
     outputs:
+      interface: ${{ steps.parse_interface.outputs.interface }}
       version: ${{ steps.parse_version.outputs.version }}
+      curseforgeid: ${{ steps.parse_curseforgeid.outputs.curseforgeid }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Parse interface version
+        id: parse_interface
+        run: |
+          INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
+          echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
 
       - name: Parse TOC version number
         id: parse_version
         run: |
           VERSION=$(grep -E '^## Version:' Labormate.toc | sed -E 's/## Version:[[:space:]]*//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Parse CurseForge id
+        id: parse_curseforgeid
+        run: |
+          CURSEFORGEID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
+          echo "curseforgeid=$CURSEFORGEID" >> $GITHUB_OUTPUT
 
       - name: Create tag
         run: |
@@ -77,22 +91,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Parse interface version
-        id: parse_interface
-        run: |
-          INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
-          echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
-
-      - name: Parse project id
-        id: parse_projectid
-        run: |
-          PROJECTID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
-          echo "projectid=$PROJECTID" >> $GITHUB_OUTPUT
-
       - name: Retrieve game version id
         id: retrieve_versionid
         run: |
-          INTERFACE="${{ steps.parse_interface.outputs.interface }}"
+          INTERFACE="${{ needs.package.outputs.interface }}"
           curl -s -X GET "https://wow.curseforge.com/api/game/versions" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
           VERSIONID=$(jq \
@@ -110,7 +112,7 @@ jobs:
             --arg game_versions [${{ steps.retrieve_versionid.outputs.versionid }}] \
             --arg release_type "release" \
             '{changelog: $changelog, changelogType: $changelog_type, displayName: $display_name, gameVersions: $game_versions, releaseType: $release_type}')
-          curl -X POST "https://wow.curseforge.com/api/projects/${{ steps.parse_projectid.outputs.projectid }}/upload-file" \
+          curl -X POST "https://wow.curseforge.com/api/projects/${{ needs.package.outputs.curseforgeid }}/upload-file" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" \
             -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
             -F "metadata=$JSON"
