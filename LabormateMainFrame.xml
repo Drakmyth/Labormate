@@ -1,0 +1,79 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="LabormateMainFrame" mixin="LabormateMainFrameMixin" parent="UIParent" movable="true" enableMouse="true" inherits="PortraitFrameFlatTemplate" hidden="true">
+        <Size x="216" y="320" />
+        <KeyValues>
+            <KeyValue key="layoutType" value="HeldBagLayout" type="string" />
+        </KeyValues>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent" />
+        </Anchors>
+        <Frames>
+            <Button parentKey="RefreshButton" mixin="LabormateMainFrameRefreshButtonMixin" frameLevel="1000">
+                <Size x="24" y="24" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeKey="$parent.CloseButton" relativePoint="TOPLEFT" />
+                </Anchors>
+                <DisabledTexture atlas="128-RedButton-Refresh-Disabled" />
+                <NormalTexture atlas="128-RedButton-Refresh" />
+                <PushedTexture atlas="128-RedButton-Refresh-Pressed" />
+                <HighlightTexture atlas="128-RedButton-Refresh-Highlight" alphaMode="ADD" />
+                <Scripts>
+                    <OnClick method="OnClick" />
+                    <OnEnter method="OnEnter" />
+                    <OnLeave method="OnLeave" />
+                </Scripts>
+            </Button>
+            <DropdownButton parentKey="ExpansionDropdown" inherits="WowStyle1DropdownTemplate">
+                <Anchors>
+                    <Anchor point="TOP" relativeKey="$parent.TitleContainer" relativePoint="BOTTOM" y="-8" />
+                    <Anchor point="LEFT" relativeKey="$parent.PortraitContainer.portrait" relativePoint="RIGHT" x="0" />
+                    <Anchor point="RIGHT" x="-8" />
+                </Anchors>
+            </DropdownButton>
+            <Frame parentKey="prof1Panel" mixin="LabormateProfessionPanelMixin" inherits="LabormateProfessionPanelTemplate">
+                <Size x="42" />
+                <Anchors>
+                    <Anchor point="TOP" relativeKey="$parent.ExpansionDropdown" relativePoint="BOTTOM" y="-2" />
+                    <Anchor point="LEFT" x="4" />
+                    <Anchor point="BOTTOM" y="8" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="prof2Panel" inherits="LabormateProfessionPanelTemplate">
+                <Size x="42" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.prof1Panel" relativePoint="TOPRIGHT" x="0" />
+                    <Anchor point="BOTTOM" relativeKey="$parent.prof1Panel" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="cookPanel" inherits="LabormateProfessionPanelTemplate">
+                <Size x="42" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.prof2Panel" relativePoint="TOPRIGHT" x="0" />
+                    <Anchor point="BOTTOM" relativeKey="$parent.prof2Panel" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="fishPanel" inherits="LabormateProfessionPanelTemplate">
+                <Size x="42" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.cookPanel" relativePoint="TOPRIGHT" x="0" />
+                    <Anchor point="BOTTOM" relativeKey="$parent.cookPanel" />
+                </Anchors>
+            </Frame>
+            <Frame parentKey="archPanel" inherits="LabormateProfessionPanelTemplate">
+                <Size x="42" />
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeKey="$parent.fishPanel" relativePoint="TOPRIGHT" x="0" />
+                    <Anchor point="BOTTOM" relativeKey="$parent.fishPanel" />
+                </Anchors>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnDragStart method="OnDragStart" />
+            <OnDragStop method="OnDragStop" />
+            <OnHide method="OnHide" />
+            <OnShow method="OnShow" />
+            <OnEvent method="OnEvent" />
+        </Scripts>
+    </Frame>
+</Ui>

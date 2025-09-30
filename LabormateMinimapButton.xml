@@ -1,0 +1,36 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Button name="LabormateMinimapButton" parent="Minimap" mixin="LabormateMinimapButtonMixin" movable="true" enableMouse="true" frameStrata="MEDIUM">
+        <Size x="32" y="32" />
+        <Anchors>
+            <Anchor point="TOPLEFT" />
+        </Anchors>
+        <NormalTexture parentKey="normalTexture" file="Interface/Icons/ability_racial_jackofalltrades" mask="Interface/Common/commonmaskcircle">
+            <Anchors>
+                <Anchor point="TOPLEFT" x="5" y="-5" />
+                <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+            </Anchors>
+        </NormalTexture>
+        <HighlightTexture file="Interface/Common/commonroundhighlight" alphaMode="Add" alpha="0.5">
+            <Anchors>
+                <Anchor point="TOPLEFT" x="5" y="-5" />
+                <Anchor point="BOTTOMRIGHT" x="-5" y="5" />
+            </Anchors>
+        </HighlightTexture>
+        <Layers>
+            <Layer level="OVERLAY">
+                <Texture atlas="auctionhouse-itemicon-border-artifact" />
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnDragStart method="OnDragStart" />
+            <OnDragStop method="OnDragStop" />
+            <OnClick method="OnClick" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnMouseDown method="OnMouseDown" />
+            <OnMouseUp method="OnMouseUp" />
+            <OnEvent method="OnEvent" />
+        </Scripts>
+    </Button>
+</Ui>

@@ -1,0 +1,25 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Button name="LabormateProfessionBadgeTemplate" mixin="LabormateProfessionBadgeMixin" inherits="InsecureActionButtonTemplate" registerForClicks="AnyUp, AnyDown" virtual="true">
+        <Size x="32" y="32" />
+        <Attributes /> <!-- attributes are set dynamically -->
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="icon" mask="Interface/Common/commonmaskcircle"> <!-- file is set dynamically -->
+                    <Size x="28" y="28" />
+                    <Anchors>
+                        <Anchor point="CENTER" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+                <Texture atlas="CovenantChoice-Celebration-Content-Ring" />
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad method="OnLoad" />
+            <OnEnter method="OnEnter" />
+            <OnLeave method="OnLeave" />
+            <OnEvent method="OnEvent" />
+        </Scripts>
+    </Button>
+</Ui>

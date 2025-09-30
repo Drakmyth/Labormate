@@ -1,0 +1,19 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="LabormateProfessionPanelTemplate" mixin="LabormateProfessionPanelMixin" virtual="true">
+        <Frames>
+            <Frame parentKey="statusBar" inherits="LabormateProfessionStatusBarTemplate">
+                <Anchors>
+                    <Anchor point="TOP" />
+                    <Anchor point="LEFT" />
+                    <Anchor point="RIGHT" />
+                    <Anchor point="BOTTOM" y="36" />
+                </Anchors>
+            </Frame>
+            <Button parentKey="badge" inherits="LabormateProfessionBadgeTemplate">
+                <Anchors>
+                    <Anchor point="BOTTOM" />
+                </Anchors>
+            </Button>
+        </Frames>
+    </Frame>
+</Ui>

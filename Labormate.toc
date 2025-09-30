@@ -1,0 +1,28 @@
+## Interface: 110200
+## Version: 1.0.110200
+## Author: Drakmyth
+## Title: Labormate
+## IconTexture: Interface/Icons/ability_racial_jackofalltrades
+## Notes: |cff9d9d9dby|r |cff8788eeDrakmyth|r|n|nHelps you keep an eye on your profession skill levels while you run in circles.
+## RequiredDeps:
+## SavedVariables:
+## SavedVariablesPerCharacter: LabormateDB
+## AddonCompartmentFunc: Labormate_OnAddonCompartmentClick
+## X-Repository: https://github.com/Drakmyth/Labormate
+
+# Init
+Labormate.lua
+
+# Mixins
+LabormateProfessionBadgeMixin.lua
+LabormateProfessionStatusBarMixin.lua
+LabormateProfessionPanelMixin.lua
+LabormateMainFrameMixin.lua
+LabormateMinimapButtonMixin.lua
+
+# Frames
+LabormateProfessionBadge.xml
+LabormateProfessionStatusBar.xml
+LabormateProfessionPanel.xml
+LabormateMainFrame.xml
+LabormateMinimapButton.xml

@@ -1,0 +1,78 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Frame name="LabormateProfessionStatusBarTemplate" mixin="LabormateProfessionStatusBarMixin" virtual="true">
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="skillBarBackground" file="Interface/AddOns/Labormate/assets/statusbar-bg.png">
+                    <TextureSliceMargins left="9" right="9" top="7" bottom="12" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" y="-20" />
+                        <Anchor point="BOTTOMRIGHT" y="16" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="1">
+                <Texture parentKey="skillBarFillTexture" rotation="-90">
+                    <Size x="856" y="30" />
+                    <Anchors>
+                        <Anchor point="CENTER" relativePoint="CENTER" y="328" />
+                    </Anchors>
+                </Texture>
+                <MaskTexture parentKey="skillBarFillMask" file="Interface/AddOns/Labormate/assets/statusbar-mask.png" hWrapMode="CLAMPTOBLACKADDITIVE" vWrapMode="CLAMPTOBLACKADDITIVE" rotation="-90">
+                    <MaskedTextures>
+                        <MaskedTexture childKey="skillBarFillTexture" />
+                    </MaskedTextures>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.skillBarFillTexture" /> <!-- Offset set dynamically -->
+                    </Anchors>
+                </MaskTexture>
+            </Layer>
+            <Layer level="ARTWORK" textureSubLevel="2">
+                <Texture atlas="UI-Minimap-Clock" parentKey="currentValueLabelBox" desaturated="true" rotation="180">
+                    <Size y="28" />
+                    <Anchors>
+                        <Anchor point="TOP" />
+                        <Anchor point="LEFT" x="3" />
+                        <Anchor point="RIGHT" x="-4" />
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="skillBarBorder" file="Interface/AddOns/Labormate/assets/statusbar-border.png">
+                    <TextureSliceMargins left="9" right="9" top="7" bottom="12" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" y="-20" />
+                        <Anchor point="BOTTOMRIGHT" y="16" />
+                    </Anchors>
+                </Texture>
+                <Texture atlas="UI-Minimap-Clock" parentKey="maxValueLabelBox" desaturated="true">
+                    <Size y="28" />
+                    <Anchors>
+                        <Anchor point="BOTTOM" />
+                        <Anchor point="LEFT" x="4" />
+                        <Anchor point="RIGHT" x="-3" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString parentKey="currentValueLabel" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.currentValueLabelBox" x="-1" y="-2" />
+                    </Anchors>
+                </FontString>
+                <FontString parentKey="maxValueLabel" inherits="GameFontHighlight">
+                    <Anchors>
+                        <Anchor point="CENTER" relativeKey="$parent.maxValueLabelBox" x="-1" y="2" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Animations>
+            <AnimationGroup parentKey="skillBarAnim">
+                <FlipBook parentKey="flipBook" startDelay="0" endDelay="0" smoothing="NONE" duration="2" childKey="skillBarFillTexture" order="1" flipBookFrameWidth="0" flipBookFrameHeight="0" /> <!-- Columns, Rows, and Frames set dynamically -->
+            </AnimationGroup>
+        </Animations>
+        <Scripts>
+            <OnShow method="OnShow" />
+            <OnEnter method="OnEnter"/>
+            <OnLeave method="OnLeave"/>
+        </Scripts>
+    </Frame>
+</Ui>
