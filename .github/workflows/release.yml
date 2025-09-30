@@ -11,6 +11,10 @@ on:
         required: false
         default: ""
 
+defaults:
+  run:
+    shell: bash -e -o pipefail {0}
+
 jobs:
   package:
     runs-on: ubuntu-latest
