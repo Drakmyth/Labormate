@@ -1,5 +1,8 @@
 name: Package Release Publish
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -30,7 +33,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Package release
-        run: git archive --format=zip ${{ steps.parse_version.outputs.version }} > Labormate-${{ steps.parse_version.outputs.version }}.zip
+        run: |
+          mkdir release/Labormate
+          cp *.lua *.toc *.xml release/Labormate/
+          cp -r assets/ release/Labormate/assets/
+          zip -r Labormate-${{ steps.parse_version.outputs.version }}.zip release/Labormate/
       
       - name: Publish release to GitHub
         uses: actions/create-release@v1
