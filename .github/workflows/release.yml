@@ -4,7 +4,6 @@ permissions:
   contents: write
 
 on:
-  pull_request:
   workflow_dispatch:
     inputs:
       release_body:
@@ -35,7 +34,7 @@ jobs:
 
       - name: Package release
         run: |
-          mkdir release/Labormate
+          mkdir -p release/Labormate
           cp *.lua *.toc *.xml release/Labormate/
           cp -r assets/ release/Labormate/assets/
           zip -r Labormate-${{ steps.parse_version.outputs.version }}.zip release/Labormate/
