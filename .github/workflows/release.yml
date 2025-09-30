@@ -99,7 +99,7 @@ jobs:
         id: retrieve_versionid
         run: |
           INTERFACE="${{ needs.package.outputs.interface }}"
-          curl -s -X GET "https://wow.curseforge.com/api/game/versions" \
+          curl -s -f -X GET "https://wow.curseforge.com/api/game/versions" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
           VERSIONID=$(jq \
             --arg interface "$INTERFACE" \
