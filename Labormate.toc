@@ -9,6 +9,11 @@
 ## SavedVariablesPerCharacter: LabormateDB
 ## AddonCompartmentFunc: Labormate_OnAddonCompartmentClick
 ## X-Repository: https://github.com/Drakmyth/Labormate
+## X-Discord: 
+## X-Curse-Project-ID: 1356290
+## X-WoWI-ID: 
+## X-Tukui-ProjectID:
+## X-Wago-ID: bGoM4o60
 
 # Init
 Labormate.lua
