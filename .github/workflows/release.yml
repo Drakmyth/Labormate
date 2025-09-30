@@ -58,6 +58,6 @@ jobs:
           name: package
 
       - name: Create GitHub release
-        run: gh release create ${{ needs.package.outputs.version }} --fail-on-no-commits --generate-notes --verify-tag Labormate-${{ needs.package.outputs.version }}.zip
+        run: gh release create ${{ needs.package.outputs.version }} --fail-on-no-commits --generate-notes --verify-tag --repo Drakmyth/Labormate Labormate-${{ needs.package.outputs.version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
