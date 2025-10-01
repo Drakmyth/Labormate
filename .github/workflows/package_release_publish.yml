@@ -1,0 +1,139 @@
+name: Package Release Publish
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_body:
+        description: "Release notes/body (leave blank to use default template)"
+        required: false
+        default: ""
+
+defaults:
+  run:
+    shell: bash -e -o pipefail {0}
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    outputs:
+      interface: ${{ steps.parse_interface.outputs.interface }}
+      version: ${{ steps.parse_version.outputs.version }}
+      curseforgeid: ${{ steps.parse_curseforgeid.outputs.curseforgeid }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse interface version
+        id: parse_interface
+        run: |
+          INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
+          echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
+
+      - name: Parse TOC version number
+        id: parse_version
+        run: |
+          VERSION=$(grep -E '^## Version:' Labormate.toc | sed -E 's/## Version:[[:space:]]*//')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Parse CurseForge id
+        id: parse_curseforgeid
+        run: |
+          CURSEFORGEID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
+          echo "curseforgeid=$CURSEFORGEID" >> $GITHUB_OUTPUT
+
+      - name: Create tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.parse_version.outputs.version }}
+          git push origin ${{ steps.parse_version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package release
+        id: package_release
+        run: |
+          mkdir -p release/Labormate
+          cp *.lua *.toc *.xml release/Labormate/
+          cp -r assets/ release/Labormate/assets/
+          (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip Labormate/)
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: Labormate-${{ steps.parse_version.outputs.version }}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package
+
+      - name: Create GitHub release
+        run: gh release create ${{ needs.package.outputs.version }} --fail-on-no-commits --generate-notes --verify-tag --repo Drakmyth/Labormate Labormate-${{ needs.package.outputs.version }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-curseforge:
+    runs-on: ubuntu-latest
+    needs: [package, release]
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package
+
+      - name: Retrieve changelog
+        id: retrieve_changelog
+        run: gh release view ${{ needs.package.outputs.version }} --json body -q ".body" --repo Drakmyth/Labormate > changelog.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Retrieve game version id
+        id: retrieve_versionid
+        run: |
+          INTERFACE="${{ needs.package.outputs.interface }}"
+          curl -s -f -X GET "https://wow.curseforge.com/api/game/versions" \
+            -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
+          VERSIONID=$(jq \
+            --arg interface "$INTERFACE" \
+            -r '.[] | select(.apiVersion == $interface) | .id' versions.json)
+          echo "versionid=$VERSIONID" >> $GITHUB_OUTPUT
+
+      - name: Publish to CurseForge
+        run: |
+          CHANGELOG=$(cat changelog.txt)
+          JSON=$(jq -n \
+            --arg changelog "$CHANGELOG" \
+            --arg changelog_type "markdown" \
+            --arg display_name "${{ needs.package.outputs.version }}" \
+            --argjson game_versions "[${{ steps.retrieve_versionid.outputs.versionid }}]" \
+            --arg release_type "release" \
+            '{changelog: $changelog, changelogType: $changelog_type, displayName: $display_name, gameVersions: $game_versions, releaseType: $release_type}')
+          curl -f -X POST "https://wow.curseforge.com/api/projects/${{ needs.package.outputs.curseforgeid }}/upload-file" \
+            -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" \
+            -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
+            -F "metadata=$JSON"
+        env:
+          CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
+
+  # publish-wowinterface:
+  #   runs-on: ubuntu-latest
+  #   needs: [package, release]
+  #   steps:
+  #     - name: Download package
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: package
+
+  #     - name: Parse Project Id
+  #       id: parse_projectid
+  #       run: |
+  #         PROJECTID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
+  #         echo "projectid=$PROJECTID" >> $GITHUB_OUTPUT
