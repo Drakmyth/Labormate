@@ -40,7 +40,7 @@ jobs:
         run: |
           CHANGELOG=$(cat changelog.txt)
           JSON=$(jq -n \
-            --arg label "${{ inputs.tag }}"" \
+            --arg label "${{ inputs.tag }}" \
             --arg stability "stable" \
             --arg changelog "$CHANGELOG" \
             --arg supported_retail_patch "${{ inputs.wowversion }}" \
