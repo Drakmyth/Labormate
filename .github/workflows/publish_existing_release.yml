@@ -26,9 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download release
-        run: gh release download ${{ inputs.tag }} -p "Labormate-${{ inputs.tag }}.zip"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release download ${{ inputs.tag }} -p "Labormate-${{ inputs.tag }}.zip" --repo Drakmyth/Labormate
 
       - name: Retrieve changelog
         id: retrieve_changelog
