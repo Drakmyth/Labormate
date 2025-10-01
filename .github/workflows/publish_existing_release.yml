@@ -1,0 +1,52 @@
+name: Publish Existing Release
+
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version/Tag of existing release
+        required: true
+      wagoid:
+        description: Wago.io Project ID
+        required: true
+      wowversion:
+        description: World of Warcraft retail patch version (not the interface string)
+        required: true
+
+
+defaults:
+  run:
+    shell: bash -e -o pipefail {0}
+
+jobs:
+  publish-wago:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release
+        run: gh release download ${{ inputs.tag }} -p "Labormate-${{ inputs.tag }}.zip"
+
+      - name: Retrieve changelog
+        id: retrieve_changelog
+        run: gh release view ${{ inputs.tag }} --json body -q ".body" --repo Drakmyth/Labormate > changelog.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Wago
+        run: |
+          CHANGELOG=$(cat changelog.txt)
+          JSON=$(jq -n \
+            --arg label "${{ inputs.tag }}"" \
+            --arg stability "stable" \
+            --arg changelog "$CHANGELOG" \
+            --arg supported_retail_patch "${{ inputs.wowversion }}" \
+            '{label: $label, stability: $stability, changelog: $changelog, supported_retail_patch: $supported_retail_patch}')
+          curl -f -X POST "https://addons.wago.io/api/projects/${{ inputs.wagoid }}/version" \
+            -H "authorization: Bearer ${{ secrets.WAGO_API_TOKEN }}" \
+            -H "accept: application/json" \
+            -F "file=@Labormate-${{ inputs.tag }}.zip" \
+            -F "metadata=$JSON"
+        env:
+          CURSEFORGE_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
