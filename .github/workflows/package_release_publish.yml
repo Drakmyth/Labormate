@@ -6,10 +6,31 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      release_body:
-        description: "Release notes/body (leave blank to use default template)"
+      publish-to-github:
+        description: Create GitHub Release?
         required: false
-        default: ""
+        default: true
+        type: boolean
+      publish-to-curseforge:
+        description: Publish release to CurseForge?
+        required: false
+        default: true
+        type: boolean
+      publish-to-wowinterface:
+        description: Publish release to WoWInterface?
+        required: false
+        default: true
+        type: boolean
+      publish-to-wago:
+        description: Publish release to Wago?
+        required: false
+        default: true
+        type: boolean
+      simulate:
+        description: Simulate execution?
+        required: false
+        default: false
+        type: boolean
 
 defaults:
   run:
@@ -22,28 +43,43 @@ jobs:
       interface: ${{ steps.parse_interface.outputs.interface }}
       version: ${{ steps.parse_version.outputs.version }}
       curseforgeid: ${{ steps.parse_curseforgeid.outputs.curseforgeid }}
+      wowinterfaceid: ${{ steps.parse_wowinterfaceid.outputs.wowinterfaceid }}
+      wagoid: ${{ steps.parse_wagoid.outputs.wagoid }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Parse interface version
+      - name: Parse TOC interface
         id: parse_interface
         run: |
           INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
           echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
 
-      - name: Parse TOC version number
+      - name: Parse TOC version
         id: parse_version
         run: |
           VERSION=$(grep -E '^## Version:' Labormate.toc | sed -E 's/## Version:[[:space:]]*//')
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Parse CurseForge id
+      - name: Parse TOC CurseForge id
         id: parse_curseforgeid
         run: |
           CURSEFORGEID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
           echo "curseforgeid=$CURSEFORGEID" >> $GITHUB_OUTPUT
 
+      - name: Parse TOC WoWInterface id
+        id: parse_wowinterfaceid
+        run: |
+          WOWINTERFACEID=$(grep -E '^## X-WoWI-ID:' Labormate.toc | sed -E 's/## X-WoWI-ID:[[:space:]]*//')
+          echo "wowinterfaceid=$WOWINTERFACEID" >> $GITHUB_OUTPUT
+
+      - name: Parse TOC Wago id
+        id: parse_wagoid
+        run: |
+          WAGOID=$(grep -E '^## X-Wago-ID:' Labormate.toc | sed -E 's/## X-Wago-ID:[[:space:]]*//')
+          echo "wagoid=$WAGOID" >> $GITHUB_OUTPUT
+
       - name: Create tag
+        if: ${{ !inputs.simulate }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -68,7 +104,8 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: package
+    needs: [package]
+    if: ${{ inputs.publish-to-github }}
     steps:
       - name: Download package
         uses: actions/download-artifact@v4
@@ -76,24 +113,40 @@ jobs:
           name: package
 
       - name: Create GitHub release
+        if: ${{ !inputs.simulate }}
         run: gh release create ${{ needs.package.outputs.version }} --fail-on-no-commits --generate-notes --verify-tag --repo Drakmyth/Labormate Labormate-${{ needs.package.outputs.version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Retrieve changelog
+        id: retrieve_changelog
+        if: ${{ !inputs.simulate }}
+        run: gh release view ${{ needs.package.outputs.version }} --json body -q ".body" --repo Drakmyth/Labormate > changelog.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload changelog
+        uses: actions/upload-artifact@v4
+        if: ${{ !inputs.simulate }}
+        with:
+          name: changelog
+          path: changelog.txt
+
   publish-curseforge:
     runs-on: ubuntu-latest
     needs: [package, release]
+    if: ${{ inputs.publish-to-curseforge }}
     steps:
       - name: Download package
         uses: actions/download-artifact@v4
         with:
           name: package
 
-      - name: Retrieve changelog
-        id: retrieve_changelog
-        run: gh release view ${{ needs.package.outputs.version }} --json body -q ".body" --repo Drakmyth/Labormate > changelog.txt
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download changelog
+        uses: actions/download-artifact@v4
+        if: ${{ !inputs.simulate }}
+        with:
+          name: changelog
 
       - name: Retrieve game version id
         id: retrieve_versionid
@@ -107,6 +160,7 @@ jobs:
           echo "versionid=$VERSIONID" >> $GITHUB_OUTPUT
 
       - name: Publish to CurseForge
+        if: ${{ !inputs.simulate }}
         run: |
           CHANGELOG=$(cat changelog.txt)
           JSON=$(jq -n \
@@ -123,17 +177,87 @@ jobs:
         env:
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
 
-  # publish-wowinterface:
-  #   runs-on: ubuntu-latest
-  #   needs: [package, release]
-  #   steps:
-  #     - name: Download package
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: package
+  publish-wowinterface:
+    runs-on: ubuntu-latest
+    needs: [package, release]
+    if: ${{ inputs.publish-to-wowinterface }}
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package
 
-  #     - name: Parse Project Id
-  #       id: parse_projectid
-  #       run: |
-  #         PROJECTID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
-  #         echo "projectid=$PROJECTID" >> $GITHUB_OUTPUT
+      - name: Download changelog
+        uses: actions/download-artifact@v4
+        if: ${{ !inputs.simulate }}
+        with:
+          name: changelog
+
+      - name: Retrieve game version
+        id: retrieve_version
+        run: |
+          INTERFACE="${{ needs.package.outputs.interface }}"
+          curl -s -f -X GET "https://api.wowinterface.com/addons/compatible.json" > versions.json
+          VERSION=$(jq \
+            --arg interface "$INTERFACE" \
+            -r '.[] | select(.interface == $interface) | .id' versions.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Publish to WoWInterface
+        if: ${{ !inputs.simulate }}
+        run: |
+          CHANGELOG=$(cat changelog.txt)
+          curl -f -X POST "https://api.wowinterface.com/addons/update" \
+            -H "x-api-token: ${{ secrets.WOWINTERFACE_API_TOKEN }}" \
+            -H "accept: application/json" \
+            -F "id=${{ needs.package.outputs.wowinterfaceid }}" \
+            -F "version=${{ needs.package.outputs.version }}" \
+            -F "changelog=$CHANGELOG" \
+            -F "updatefile=@Labormate-${{ needs.package.outputs.version }}.zip"
+        env:
+          WOWINTERFACE_API_TOKEN: ${{ secrets.WOWINTERFACE_API_TOKEN }}
+
+  publish-wago:
+    runs-on: ubuntu-latest
+    needs: [package, release]
+    if: ${{ inputs.publish-to-wago }}
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: package
+
+      - name: Download changelog
+        uses: actions/download-artifact@v4
+        if: ${{ !inputs.simulate }}
+        with:
+          name: changelog
+
+      - name: Retrieve game version via CurseForge
+        id: retrieve_version
+        run: |
+          INTERFACE="${{ needs.package.outputs.interface }}"
+          curl -s -f -X GET "https://wow.curseforge.com/api/game/versions" \
+            -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
+          VERSION=$(jq \
+            --arg interface "$INTERFACE" \
+            -r '.[] | select(.apiVersion == $interface) | .name' versions.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Publish to Wago
+        if: ${{ !inputs.simulate }}
+        run: |
+          CHANGELOG=$(cat changelog.txt)
+          JSON=$(jq -n \
+            --arg label "${{ needs.package.outputs.version }}" \
+            --arg stability "stable" \
+            --arg changelog "$CHANGELOG" \
+            --arg supported_retail_patch "${{ steps.retrieve_version.outputs.version }}" \
+            '{label: $label, stability: $stability, changelog: $changelog, supported_retail_patch: $supported_retail_patch}')
+          curl -f -X POST "https://addons.wago.io/api/projects/${{ needs.package.outputs.wagoid }}/version" \
+            -H "authorization: Bearer ${{ secrets.WAGO_API_TOKEN }}" \
+            -H "accept: application/json" \
+            -F "file=@Labormate-${{ needs.package.outputs.version }}.zip" \
+            -F "metadata=$JSON"
+        env:
+          WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
