@@ -64,6 +64,7 @@ function LabormateProfessionStatusBarMixin:UpdateFromInfo(professionInfo)
     if not professionInfo or professionInfo.maxSkillLevel == 0 then
         self.currentValueLabel:SetText("")
         self.maxValueLabel:SetText("")
+        self.skillBarFillMask:SetPoint("CENTER", self.skillBarFillTexture, 0, -self.skillBarFillTexture:GetWidth());
         return
     end
 

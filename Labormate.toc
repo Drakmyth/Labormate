@@ -1,5 +1,5 @@
-## Interface: 110200
-## Version: 1.0.110200.0
+## Interface: 110205
+## Version: 1.0.110205.0
 ## Author: Drakmyth
 ## Title: Labormate
 ## IconTexture: Interface/Icons/ability_racial_jackofalltrades
