@@ -68,8 +68,12 @@
             <AnimationGroup parentKey="skillBarAnim">
                 <FlipBook parentKey="flipBook" startDelay="0" endDelay="0" smoothing="NONE" duration="2" childKey="skillBarFillTexture" order="1" flipBookFrameWidth="0" flipBookFrameHeight="0" /> <!-- Columns, Rows, and Frames set dynamically -->
             </AnimationGroup>
+            <AnimationGroup parentKey="skillBarMaskAnim">
+                <Translation parentKey="maskTranslation" startDelay="0" endDelay="0" smoothing="NONE" order="1" /> <!-- Target, Offset, and Duration set dynamically -->
+            </AnimationGroup>
         </Animations>
         <Scripts>
+            <OnLoad method="OnLoad" />
             <OnShow method="OnShow" />
             <OnEnter method="OnEnter"/>
             <OnLeave method="OnLeave"/>

@@ -103,6 +103,13 @@ function LabormateProfessionStatusBarMixin:UpdateFromInfo(professionInfo)
     local skillBarHeight = lerp(skillBarEmptyHeight, skillBarFullHeight, ratio)
 
     self.skillBarFillMask:SetPoint("CENTER", self.skillBarFillTexture, 0, skillBarHeight);
+
+    self.skillBarMaskAnim.maskTranslation:SetOffset(0, skillBarEmptyHeight - skillBarHeight);
+    self.skillBarMaskAnim.maskTranslation:SetDuration(0.5 * ratio)
+end
+
+function LabormateProfessionStatusBarMixin:OnLoad()
+    self.skillBarMaskAnim.maskTranslation:SetTarget(self.skillBarFillMask);
 end
 
 function LabormateProfessionStatusBarMixin:OnShow()
@@ -111,6 +118,10 @@ end
 
 function LabormateProfessionStatusBarMixin:PlayAnim()
     self.skillBarAnim:Play()
+    -- TODO: Known issue: this is going to animation the bar from 0 to actual skill every time the skill level increases. It ideally should animate from
+    -- previous level to current level
+    local playReverse = true
+    self.skillBarMaskAnim:Play(playReverse)
 end
 
 function LabormateProfessionStatusBarMixin:OnEnter()
