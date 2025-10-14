@@ -2,6 +2,9 @@ Labormate = {
     ADDON_NAME = "Labormate"
 }
 
+-- Keybinding labels
+_G["BINDING_NAME_CLICK LabormateMinimapButton:LeftButton"] = "Open/Close Labormate"
+
 Labormate.Settings = {
     ShowMinimapButton = Labormate.ADDON_NAME .. "_ShowMinimapButton"
 }
