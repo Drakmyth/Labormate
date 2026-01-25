@@ -24,7 +24,7 @@ function LabormateProfessionBadgeMixin:OnEnter()
         local spellId = self["spellID" .. i]
         local buttonIndex = 3 - i
 
-        if spellId then
+        if spellId and not C_Spell.IsSpellPassive(spellId) then
             GameTooltip:AddLine(" ")
 
             local index, bank = C_SpellBook.FindSpellBookSlotForSpell(spellId)
@@ -38,6 +38,7 @@ function LabormateProfessionBadgeMixin:OnEnter()
                     elseif buttonIndex == 2 then
                         clickHeader = "|cff00ff00Right-Click:|r "
                     end
+
                 end
 
                 local text = clickHeader .. line.leftText
