@@ -123,6 +123,12 @@ function LabormateProfessionStatusBarMixin:PlayAnim()
     self.skillBarAnim:Play()
 end
 
+function LabormateProfessionStatusBarMixin:OnMouseUp(button)
+    if button == "LeftButton" and not self.skillBarAnim:IsPlaying() then
+        self.skillBarAnim:Restart()
+    end
+end
+
 function LabormateProfessionStatusBarMixin:OnEnter()
     GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
     GameTooltip:ClearLines()
