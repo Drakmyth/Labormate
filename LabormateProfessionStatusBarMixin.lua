@@ -123,7 +123,7 @@ function LabormateProfessionStatusBarMixin:PlayAnim()
     self.skillBarAnim:Play()
 end
 
-function LabormateProfessionStatusBarMixin:OnMouseUp(button)
+function LabormateProfessionStatusBarMixin:OnMouseDown(button)
     if button == "LeftButton" and not self.skillBarAnim:IsPlaying() then
         self.skillBarAnim:Restart()
     end

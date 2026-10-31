@@ -71,7 +71,7 @@
         </Animations>
         <Scripts>
             <OnShow method="OnShow" />
-            <OnMouseUp method="OnMouseUp" />
+            <OnMouseDown method="OnMouseDown" />
             <OnEnter method="OnEnter"/>
             <OnLeave method="OnLeave"/>
         </Scripts>
