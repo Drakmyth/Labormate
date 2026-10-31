@@ -7,7 +7,7 @@ local UI_SCALE_MAX = 2
 local UI_SCALE_STEP = 0.05
 
 -- Keybinding labels
-_G["BINDING_NAME_CLICK LabormateMinimapButton:LeftButton"] = "Open/Close Labormate"
+_G["BINDING_NAME_LABORMATE_TOGGLE"] = "Open/Close Labormate"
 
 Labormate.Settings = {
     ShowMinimapButton = Labormate.ADDON_NAME .. "_ShowMinimapButton",

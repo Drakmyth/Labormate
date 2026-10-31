@@ -1,3 +1,5 @@
 <Bindings>
-    <Binding name="CLICK LabormateMinimapButton:LeftButton" category="Labormate"/>
+    <Binding name="LABORMATE_TOGGLE" category="Labormate">
+        Labormate.mainFrame:Toggle()
+    </Binding>
 </Bindings>
