@@ -2,11 +2,16 @@ Labormate = {
     ADDON_NAME = "Labormate"
 }
 
+local UI_SCALE_MIN = 0.5
+local UI_SCALE_MAX = 2
+local UI_SCALE_STEP = 0.05
+
 -- Keybinding labels
 _G["BINDING_NAME_CLICK LabormateMinimapButton:LeftButton"] = "Open/Close Labormate"
 
 Labormate.Settings = {
-    ShowMinimapButton = Labormate.ADDON_NAME .. "_ShowMinimapButton"
+    ShowMinimapButton = Labormate.ADDON_NAME .. "_ShowMinimapButton",
+    UIScale = Labormate.ADDON_NAME .. "_UIScale",
 }
 
 Labormate.Events = {
@@ -244,6 +249,7 @@ local function initializeDB()
         isOpen = false,
         showMinimapButton = true,
         minimapButtonAngle = math.rad(135),
+        uiScale = 1,
     }
 
     LabormateDB = LabormateDB or {}
@@ -256,11 +262,17 @@ local function initializeDB()
     if not _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion] then
         LabormateDB.selectedExpansion = LE_EXPANSION_LEVEL_CURRENT
     end
+
+    local uiScale = tonumber(LabormateDB.uiScale) or defaults.uiScale
+    LabormateDB.uiScale = math.max(UI_SCALE_MIN, math.min(UI_SCALE_MAX, uiScale))
 end
 
 local function onSettingChanged(setting, value)
-    if setting:GetVariable() == Labormate.Settings.ShowMinimapButton then
+    local variable = setting:GetVariable()
+    if variable == Labormate.Settings.ShowMinimapButton then
         Labormate.minimapButton:SetShown(value)
+    elseif variable == Labormate.Settings.UIScale then
+        Labormate.mainFrame:SetScale(value)
     end
 end
 
@@ -282,6 +294,27 @@ local function initializeSettingsPanel()
         Settings.CreateCheckbox(Labormate.SettingsCategory, setting, tooltip)
     end
 
+    do
+        local name = "UI Scale"
+        local variable = Labormate.Settings.UIScale
+        local variableKey = "uiScale"
+        local variableTbl = LabormateDB
+        local defaultValue = 1
+
+        local setting = Settings.RegisterAddOnSetting(Labormate.SettingsCategory, variable, variableKey, variableTbl,
+            type(defaultValue), name, defaultValue)
+        setting:SetValueChangedCallback(onSettingChanged)
+
+        local options = Settings.CreateSliderOptions(UI_SCALE_MIN, UI_SCALE_MAX, UI_SCALE_STEP)
+        options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, function(value)
+            return string.format("%d%%", math.floor(value * 100 + 0.5))
+        end)
+
+        local tooltip = "Adjust the size of the Labormate window relative to the World of Warcraft UI scale."
+        Settings.CreateSlider(Labormate.SettingsCategory, setting, options, tooltip)
+    end
+
+    Labormate.mainFrame:SetScale(LabormateDB.uiScale)
     Settings.RegisterAddOnCategory(Labormate.SettingsCategory)
 end
 
