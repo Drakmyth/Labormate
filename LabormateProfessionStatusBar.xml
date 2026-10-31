@@ -1,5 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
-    <Frame name="LabormateProfessionStatusBarTemplate" mixin="LabormateProfessionStatusBarMixin" virtual="true">
+    <Frame name="LabormateProfessionStatusBarTemplate" mixin="LabormateProfessionStatusBarMixin" virtual="true" enableMouse="true">
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture parentKey="skillBarBackground" file="Interface/AddOns/Labormate/assets/statusbar-bg.png">
@@ -71,6 +71,7 @@
         </Animations>
         <Scripts>
             <OnShow method="OnShow" />
+            <OnMouseDown method="OnMouseDown" />
             <OnEnter method="OnEnter"/>
             <OnLeave method="OnLeave"/>
         </Scripts>
