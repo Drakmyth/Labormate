@@ -11,31 +11,37 @@ function LabormateProfessionPanelMixin:UpdateFromSkillIndex(professionSkillIndex
 
     if professionSkillIndex then
         local _, realIcon, _, _, numAbilities, spellOffset, skillLine = GetProfessionInfo(professionSkillIndex)
-        icon = realIcon
+        icon = realIcon or icon
 
-        if numAbilities > 0 then
-            for i = 1, numAbilities do
-                -- For professions, the journal is ability 1, and there may or may not be an ability 2
-                -- We want the journal to go on Right-Click (button 2) and the ability on Left-Click (button 1)
+        if numAbilities and spellOffset then
+            for i = 1, math.min(numAbilities, 2) do
+                -- The journal is ability 1, and there may also be a profession ability.
+                -- Put the journal on Right-Click and the profession ability on Left-Click.
                 local buttonIndex = 3 - i
                 local spellIndex = spellOffset + i
                 local spellInfo = C_SpellBook.GetSpellBookItemInfo(spellIndex, Enum.SpellBookSpellBank.Player)
+                local spellID = spellInfo and spellInfo.actionID
 
-                self.badge["spellID" .. i] = spellInfo.actionID
-
-                self.badge:SetAttribute("type" .. buttonIndex, "spell")
-                self.badge:SetAttribute("spell" .. buttonIndex, spellInfo.actionID)
+                if spellID then
+                    self.badge["spellID" .. i] = spellID
+                    self.badge:SetAttribute("type" .. buttonIndex, "spell")
+                    self.badge:SetAttribute("spell" .. buttonIndex, spellID)
+                end
             end
         end
 
-        local selectedExpansion = LabormateDB.selectedExpansion
-        local skillLineId = Labormate.SkillLineIds[skillLine][selectedExpansion]
-        info = C_TradeSkillUI.GetProfessionInfoBySkillLineID(skillLineId)
+        local skillLines = Labormate.SkillLineIds[skillLine]
+        local skillLineID = skillLines and skillLines[LabormateDB.selectedExpansion]
+        if skillLineID then
+            info = C_TradeSkillUI.GetProfessionInfoBySkillLineID(skillLineID)
+        end
 
-        if info.profession == Enum.Profession.Archaeology then
-            self.badge.professionName = info.professionName
-        else
-            self.badge.professionName = info.parentProfessionName
+        if info then
+            if info.profession == Enum.Profession.Archaeology then
+                self.badge.professionName = info.professionName
+            else
+                self.badge.professionName = info.parentProfessionName
+            end
         end
     end
 

@@ -28,9 +28,9 @@ function LabormateProfessionBadgeMixin:OnEnter()
             GameTooltip:AddLine(" ")
 
             local index, bank = C_SpellBook.FindSpellBookSlotForSpell(spellId)
-            local data = C_TooltipInfo.GetSpellBookItem(index, bank)
+            local data = index and bank and C_TooltipInfo.GetSpellBookItem(index, bank)
 
-            for idx, line in ipairs(data.lines) do
+            for idx, line in ipairs(data and data.lines or {}) do
                 local clickHeader = ""
                 if idx == 1 then
                     if buttonIndex == 1 then
@@ -41,12 +41,14 @@ function LabormateProfessionBadgeMixin:OnEnter()
 
                 end
 
-                local text = clickHeader .. line.leftText
-                local r, g, b = line.leftColor.r, line.leftColor.g, line.leftColor.b
+                local text = clickHeader .. (line.leftText or "")
+                local leftColor = line.leftColor or NORMAL_FONT_COLOR
+                local r, g, b = leftColor.r, leftColor.g, leftColor.b
 
                 if line.rightText then
                     local rtext = line.rightText
-                    local rr, rg, rb = line.rightColor.r, line.rightColor.g, line.rightColor.b
+                    local rightColor = line.rightColor or NORMAL_FONT_COLOR
+                    local rr, rg, rb = rightColor.r, rightColor.g, rightColor.b
                     GameTooltip:AddDoubleLine(text, rtext, r, g, b, rr, rg, rb)
                 else
                     GameTooltip:AddLine(text, r, g, b, line.wrapText)
