@@ -47,7 +47,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2750,
         [LE_EXPANSION_DRAGONFLIGHT] = 2823,
         [LE_EXPANSION_WAR_WITHIN] = 2871,
-        [11] = 2906
+        [LE_EXPANSION_MIDNIGHT] = 2906
     },
     [Labormate.Professions.BLACKSMITHING] = {
         [LE_EXPANSION_CLASSIC] = 2477,
@@ -61,7 +61,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2751,
         [LE_EXPANSION_DRAGONFLIGHT] = 2822,
         [LE_EXPANSION_WAR_WITHIN] = 2872,
-        [11] = 2907
+        [LE_EXPANSION_MIDNIGHT] = 2907
     },
     [Labormate.Professions.COOKING] = {
         [LE_EXPANSION_CLASSIC] = 2548,
@@ -75,7 +75,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2752,
         [LE_EXPANSION_DRAGONFLIGHT] = 2824,
         [LE_EXPANSION_WAR_WITHIN] = 2873,
-        [11] = 2908
+        [LE_EXPANSION_MIDNIGHT] = 2908
     },
     [Labormate.Professions.ENCHANTING] = {
         [LE_EXPANSION_CLASSIC] = 2494,
@@ -89,7 +89,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2753,
         [LE_EXPANSION_DRAGONFLIGHT] = 2825,
         [LE_EXPANSION_WAR_WITHIN] = 2874,
-        [11] = 2909
+        [LE_EXPANSION_MIDNIGHT] = 2909
     },
     [Labormate.Professions.ENGINEERING] = {
         [LE_EXPANSION_CLASSIC] = 2506,
@@ -103,7 +103,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2755,
         [LE_EXPANSION_DRAGONFLIGHT] = 2827,
         [LE_EXPANSION_WAR_WITHIN] = 2875,
-        [11] = 2910
+        [LE_EXPANSION_MIDNIGHT] = 2910
     },
     [Labormate.Professions.FISHING] = {
         [LE_EXPANSION_CLASSIC] = 2592,
@@ -117,7 +117,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2754,
         [LE_EXPANSION_DRAGONFLIGHT] = 2826,
         [LE_EXPANSION_WAR_WITHIN] = 2876,
-        [11] = 2911
+        [LE_EXPANSION_MIDNIGHT] = 2911
     },
     [Labormate.Professions.HERBALISM] = {
         [LE_EXPANSION_CLASSIC] = 2556,
@@ -131,7 +131,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2760,
         [LE_EXPANSION_DRAGONFLIGHT] = 2832,
         [LE_EXPANSION_WAR_WITHIN] = 2877,
-        [11] = 2912
+        [LE_EXPANSION_MIDNIGHT] = 2912
     },
     [Labormate.Professions.INSCRIPTION] = {
         [LE_EXPANSION_CLASSIC] = 2514,
@@ -145,7 +145,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2756,
         [LE_EXPANSION_DRAGONFLIGHT] = 2828,
         [LE_EXPANSION_WAR_WITHIN] = 2878,
-        [11] = 2913
+        [LE_EXPANSION_MIDNIGHT] = 2913
     },
     [Labormate.Professions.JEWELCRAFTING] = {
         [LE_EXPANSION_CLASSIC] = 2524,
@@ -159,7 +159,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2757,
         [LE_EXPANSION_DRAGONFLIGHT] = 2829,
         [LE_EXPANSION_WAR_WITHIN] = 2879,
-        [11] = 2914
+        [LE_EXPANSION_MIDNIGHT] = 2914
     },
     [Labormate.Professions.LEATHERWORKING] = {
         [LE_EXPANSION_CLASSIC] = 2532,
@@ -173,7 +173,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2758,
         [LE_EXPANSION_DRAGONFLIGHT] = 2830,
         [LE_EXPANSION_WAR_WITHIN] = 2880,
-        [11] = 2915
+        [LE_EXPANSION_MIDNIGHT] = 2915
     },
     [Labormate.Professions.MINING] = {
         [LE_EXPANSION_CLASSIC] = 2572,
@@ -187,7 +187,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2761,
         [LE_EXPANSION_DRAGONFLIGHT] = 2833,
         [LE_EXPANSION_WAR_WITHIN] = 2881,
-        [11] = 2916
+        [LE_EXPANSION_MIDNIGHT] = 2916
     },
     [Labormate.Professions.SKINNING] = {
         [LE_EXPANSION_CLASSIC] = 2564,
@@ -201,7 +201,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2762,
         [LE_EXPANSION_DRAGONFLIGHT] = 2834,
         [LE_EXPANSION_WAR_WITHIN] = 2882,
-        [11] = 2917
+        [LE_EXPANSION_MIDNIGHT] = 2917
     },
     [Labormate.Professions.TAILORING] = {
         [LE_EXPANSION_CLASSIC] = 2540,
@@ -215,7 +215,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 2759,
         [LE_EXPANSION_DRAGONFLIGHT] = 2831,
         [LE_EXPANSION_WAR_WITHIN] = 2883,
-        [11] = 2918
+        [LE_EXPANSION_MIDNIGHT] = 2918
     },
     [Labormate.Professions.ARCHAEOLOGY] = {
         [LE_EXPANSION_CLASSIC] = 794,
@@ -229,7 +229,7 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_SHADOWLANDS] = 794,
         [LE_EXPANSION_DRAGONFLIGHT] = 794,
         [LE_EXPANSION_WAR_WITHIN] = 794,
-        [11] = 794
+        [LE_EXPANSION_MIDNIGHT] = 794
     }
 }
 
