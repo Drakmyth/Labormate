@@ -46,7 +46,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2478,
         [LE_EXPANSION_SHADOWLANDS] = 2750,
         [LE_EXPANSION_DRAGONFLIGHT] = 2823,
-        [LE_EXPANSION_WAR_WITHIN] = 2871
+        [LE_EXPANSION_WAR_WITHIN] = 2871,
+        [LE_EXPANSION_MIDNIGHT] = 2906
     },
     [Labormate.Professions.BLACKSMITHING] = {
         [LE_EXPANSION_CLASSIC] = 2477,
@@ -59,7 +60,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2437,
         [LE_EXPANSION_SHADOWLANDS] = 2751,
         [LE_EXPANSION_DRAGONFLIGHT] = 2822,
-        [LE_EXPANSION_WAR_WITHIN] = 2872
+        [LE_EXPANSION_WAR_WITHIN] = 2872,
+        [LE_EXPANSION_MIDNIGHT] = 2907
     },
     [Labormate.Professions.COOKING] = {
         [LE_EXPANSION_CLASSIC] = 2548,
@@ -72,7 +74,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2541,
         [LE_EXPANSION_SHADOWLANDS] = 2752,
         [LE_EXPANSION_DRAGONFLIGHT] = 2824,
-        [LE_EXPANSION_WAR_WITHIN] = 2873
+        [LE_EXPANSION_WAR_WITHIN] = 2873,
+        [LE_EXPANSION_MIDNIGHT] = 2908
     },
     [Labormate.Professions.ENCHANTING] = {
         [LE_EXPANSION_CLASSIC] = 2494,
@@ -85,7 +88,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2486,
         [LE_EXPANSION_SHADOWLANDS] = 2753,
         [LE_EXPANSION_DRAGONFLIGHT] = 2825,
-        [LE_EXPANSION_WAR_WITHIN] = 2874
+        [LE_EXPANSION_WAR_WITHIN] = 2874,
+        [LE_EXPANSION_MIDNIGHT] = 2909
     },
     [Labormate.Professions.ENGINEERING] = {
         [LE_EXPANSION_CLASSIC] = 2506,
@@ -98,7 +102,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2499,
         [LE_EXPANSION_SHADOWLANDS] = 2755,
         [LE_EXPANSION_DRAGONFLIGHT] = 2827,
-        [LE_EXPANSION_WAR_WITHIN] = 2875
+        [LE_EXPANSION_WAR_WITHIN] = 2875,
+        [LE_EXPANSION_MIDNIGHT] = 2910
     },
     [Labormate.Professions.FISHING] = {
         [LE_EXPANSION_CLASSIC] = 2592,
@@ -111,7 +116,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2585,
         [LE_EXPANSION_SHADOWLANDS] = 2754,
         [LE_EXPANSION_DRAGONFLIGHT] = 2826,
-        [LE_EXPANSION_WAR_WITHIN] = 2876
+        [LE_EXPANSION_WAR_WITHIN] = 2876,
+        [LE_EXPANSION_MIDNIGHT] = 2911
     },
     [Labormate.Professions.HERBALISM] = {
         [LE_EXPANSION_CLASSIC] = 2556,
@@ -124,7 +130,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2549,
         [LE_EXPANSION_SHADOWLANDS] = 2760,
         [LE_EXPANSION_DRAGONFLIGHT] = 2832,
-        [LE_EXPANSION_WAR_WITHIN] = 2877
+        [LE_EXPANSION_WAR_WITHIN] = 2877,
+        [LE_EXPANSION_MIDNIGHT] = 2912
     },
     [Labormate.Professions.INSCRIPTION] = {
         [LE_EXPANSION_CLASSIC] = 2514,
@@ -137,7 +144,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2507,
         [LE_EXPANSION_SHADOWLANDS] = 2756,
         [LE_EXPANSION_DRAGONFLIGHT] = 2828,
-        [LE_EXPANSION_WAR_WITHIN] = 2878
+        [LE_EXPANSION_WAR_WITHIN] = 2878,
+        [LE_EXPANSION_MIDNIGHT] = 2913
     },
     [Labormate.Professions.JEWELCRAFTING] = {
         [LE_EXPANSION_CLASSIC] = 2524,
@@ -150,7 +158,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2517,
         [LE_EXPANSION_SHADOWLANDS] = 2757,
         [LE_EXPANSION_DRAGONFLIGHT] = 2829,
-        [LE_EXPANSION_WAR_WITHIN] = 2879
+        [LE_EXPANSION_WAR_WITHIN] = 2879,
+        [LE_EXPANSION_MIDNIGHT] = 2914
     },
     [Labormate.Professions.LEATHERWORKING] = {
         [LE_EXPANSION_CLASSIC] = 2532,
@@ -163,7 +172,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2525,
         [LE_EXPANSION_SHADOWLANDS] = 2758,
         [LE_EXPANSION_DRAGONFLIGHT] = 2830,
-        [LE_EXPANSION_WAR_WITHIN] = 2880
+        [LE_EXPANSION_WAR_WITHIN] = 2880,
+        [LE_EXPANSION_MIDNIGHT] = 2915
     },
     [Labormate.Professions.MINING] = {
         [LE_EXPANSION_CLASSIC] = 2572,
@@ -176,7 +186,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2565,
         [LE_EXPANSION_SHADOWLANDS] = 2761,
         [LE_EXPANSION_DRAGONFLIGHT] = 2833,
-        [LE_EXPANSION_WAR_WITHIN] = 2881
+        [LE_EXPANSION_WAR_WITHIN] = 2881,
+        [LE_EXPANSION_MIDNIGHT] = 2916
     },
     [Labormate.Professions.SKINNING] = {
         [LE_EXPANSION_CLASSIC] = 2564,
@@ -189,7 +200,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2557,
         [LE_EXPANSION_SHADOWLANDS] = 2762,
         [LE_EXPANSION_DRAGONFLIGHT] = 2834,
-        [LE_EXPANSION_WAR_WITHIN] = 2882
+        [LE_EXPANSION_WAR_WITHIN] = 2882,
+        [LE_EXPANSION_MIDNIGHT] = 2917
     },
     [Labormate.Professions.TAILORING] = {
         [LE_EXPANSION_CLASSIC] = 2540,
@@ -202,7 +214,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 2533,
         [LE_EXPANSION_SHADOWLANDS] = 2759,
         [LE_EXPANSION_DRAGONFLIGHT] = 2831,
-        [LE_EXPANSION_WAR_WITHIN] = 2883
+        [LE_EXPANSION_WAR_WITHIN] = 2883,
+        [LE_EXPANSION_MIDNIGHT] = 2918
     },
     [Labormate.Professions.ARCHAEOLOGY] = {
         [LE_EXPANSION_CLASSIC] = 794,
@@ -215,7 +228,8 @@ Labormate.SkillLineIds = {
         [LE_EXPANSION_BATTLE_FOR_AZEROTH] = 794,
         [LE_EXPANSION_SHADOWLANDS] = 794,
         [LE_EXPANSION_DRAGONFLIGHT] = 794,
-        [LE_EXPANSION_WAR_WITHIN] = 794
+        [LE_EXPANSION_WAR_WITHIN] = 794,
+        [LE_EXPANSION_MIDNIGHT] = 794
     }
 }
 
@@ -224,12 +238,24 @@ function Labormate_OnAddonCompartmentClick(addOnName, button)
     Labormate.minimapButton:OnClick(button)
 end
 
-local function getDefaultDB()
-    return {
-        selectedExpansion = LE_EXPANSION_CLASSIC,
+local function initializeDB()
+    local defaults = {
+        selectedExpansion = LE_EXPANSION_LEVEL_CURRENT,
         isOpen = false,
         showMinimapButton = true,
+        minimapButtonAngle = math.rad(135),
     }
+
+    LabormateDB = LabormateDB or {}
+    for key, value in pairs(defaults) do
+        if LabormateDB[key] == nil then
+            LabormateDB[key] = value
+        end
+    end
+
+    if not _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion] then
+        LabormateDB.selectedExpansion = LE_EXPANSION_LEVEL_CURRENT
+    end
 end
 
 local function onSettingChanged(setting, value)
@@ -271,8 +297,8 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     if event == "ADDON_LOADED" then
         local addOnName = ...
         if addOnName == Labormate.ADDON_NAME then
-            LabormateDB = LabormateDB or getDefaultDB()
-
+            self:UnregisterEvent(Labormate.Events.ADDON_LOADED)
+            initializeDB()
             initializeSettingsPanel()
             registerSlashCommands()
         end

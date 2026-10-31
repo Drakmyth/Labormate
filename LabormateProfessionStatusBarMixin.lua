@@ -42,6 +42,16 @@ function LabormateProfessionStatusBarMixin:SetFillAtlas(fillAtlas)
     end
 
     local atlasInfo = C_Texture.GetAtlasInfo(fillAtlas)
+    if not atlasInfo then
+        fillAtlas = FILL_PREFIX .. DEFAULT_BLUE
+        atlasColumns = 1
+        atlasInfo = C_Texture.GetAtlasInfo(fillAtlas)
+    end
+
+    if not atlasInfo then
+        return
+    end
+
     local atlasRows = atlasInfo.height / ATLAS_FRAME_HEIGHT
     local atlasFrames = atlasColumns * atlasRows
 
@@ -125,12 +135,12 @@ function LabormateProfessionStatusBarMixin:OnEnter()
             professionName = self.professionInfo.parentProfessionName
         end
 
-        GameTooltip:SetText("|cffffffff" .. professionName .. "|r")
+        GameTooltip:SetText("|cffffffff" .. (professionName or UNKNOWN) .. "|r")
         if self.professionInfo.maxSkillLevel == 0 then
             GameTooltip:AddLine("|cffff0000" .. "Visit a trainer to learn this skill." .. "|r")
         end
 
-        local expansionName = _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion]
+        local expansionName = _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion] or UNKNOWN
         GameTooltip:AddLine(" ")
         GameTooltip:AddLine("Expansion: " .. expansionName)
 

@@ -18,24 +18,24 @@ local function adjustButtonTextureReleased(texture)
     texture:SetVertexColor(1, 1, 1, 1)
 end
 
-local function projectCursorToMinimap()
-    local mx, my = Minimap:GetCenter()
-    local cx, cy = GetCursorPosition()
-    local scale = Minimap:GetEffectiveScale()
-    cx, cy = cx / scale, cy / scale
-
-    local dx, dy = cx - mx, cy - my
+local function setButtonPosition(button, angle)
     local radius = Minimap:GetWidth() / 2
+    button:ClearAllPoints()
+    button:SetPoint("CENTER", Minimap, "CENTER", math.cos(angle) * radius, math.sin(angle) * radius)
+end
 
-    local angle = math.atan2(dy, dx)
-    local x = math.cos(angle) * radius
-    local y = math.sin(angle) * radius
+local function getCursorAngle()
+    local minimapX, minimapY = Minimap:GetCenter()
+    local cursorX, cursorY = GetCursorPosition()
+    local scale = Minimap:GetEffectiveScale()
 
-    return x, y
+    return math.atan2(cursorY / scale - minimapY, cursorX / scale - minimapX)
 end
 
 function LabormateMinimapButtonMixin:OnEvent(event)
     if event == Labormate.Events.PLAYER_ENTERING_WORLD then
+        setButtonPosition(self, LabormateDB.minimapButtonAngle)
+
         if LabormateDB.showMinimapButton then
             self:Show()
         else
@@ -56,9 +56,8 @@ function LabormateMinimapButtonMixin:OnDragStop()
 end
 
 function LabormateMinimapButtonMixin:OnUpdate()
-    self:ClearAllPoints()
-    local x, y = projectCursorToMinimap()
-    self:SetPoint("CENTER", Minimap, "CENTER", x, y)
+    LabormateDB.minimapButtonAngle = getCursorAngle()
+    setButtonPosition(self, LabormateDB.minimapButtonAngle)
 end
 
 function LabormateMinimapButtonMixin:OnClick(button)

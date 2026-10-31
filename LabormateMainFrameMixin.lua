@@ -35,8 +35,11 @@ function LabormateMainFrameMixin:InitializeExpansionDropdownMenu()
         local function IsSelected(index) return index == LabormateDB.selectedExpansion; end
         local function SetSelected(index) self:OnExpansionDropdownOptionSelected(index); end
 
-        for expansion = 0, 10 do
-            rootDescription:CreateRadio(_G["EXPANSION_NAME" .. expansion], IsSelected, SetSelected, expansion)
+        for expansion = LE_EXPANSION_CLASSIC, LE_EXPANSION_LEVEL_CURRENT do
+            local expansionName = _G["EXPANSION_NAME" .. expansion]
+            if expansionName then
+                rootDescription:CreateRadio(expansionName, IsSelected, SetSelected, expansion)
+            end
         end
     end)
 end
@@ -55,7 +58,7 @@ function LabormateMainFrameMixin:OnDragStop()
 end
 
 function LabormateMainFrameMixin:OnHide()
-    PlaySound(808)
+    PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
     LabormateDB.isOpen = false
 end
 
@@ -68,36 +71,52 @@ function LabormateMainFrameMixin:Toggle()
 end
 
 function LabormateMainFrameMixin:OnShow()
-    PlaySound(808)
+    PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
     self:UpdateStatusBars()
     LabormateDB.isOpen = true
 end
 
 function LabormateMainFrameMixin:OnEvent(event, ...)
     if event == Labormate.Events.ADDON_LOADED then
-        self:InitializeExpansionDropdownMenu()
+        local addOnName = ...
+        if addOnName == Labormate.ADDON_NAME then
+            self:UnregisterEvent(Labormate.Events.ADDON_LOADED)
+            self:InitializeExpansionDropdownMenu()
+        end
     elseif event == Labormate.Events.PLAYER_ENTERING_WORLD then
         if LabormateDB.isOpen and not self:IsShown() then
             self:Show()
         end
     elseif event == Labormate.Events.SKILL_LINES_CHANGED then
         self:UpdateStatusBars()
+    elseif event == Labormate.Events.PLAYER_REGEN_ENABLED and self.updatePending then
+        self:UpdateStatusBars()
     end
 end
 
 function LabormateMainFrameMixin:UpdateStatusBars()
-    local prof1SkillIndex, prof2SkillIndex, archSkillIndex, fishSkillIndex, cookSkillIndex, _ = GetProfessions()
+    if InCombatLockdown() then
+        self.updatePending = true
+        self:RegisterEvent(Labormate.Events.PLAYER_REGEN_ENABLED)
+        return
+    end
 
-    self.prof1Panel:UpdateFromSkillIndex(prof1SkillIndex)
-    self.prof1Panel:PlayStatusBarAnim()
-    self.prof2Panel:UpdateFromSkillIndex(prof2SkillIndex)
-    self.prof2Panel:PlayStatusBarAnim()
-    self.cookPanel:UpdateFromSkillIndex(cookSkillIndex)
-    self.cookPanel:PlayStatusBarAnim()
-    self.fishPanel:UpdateFromSkillIndex(fishSkillIndex)
-    self.fishPanel:PlayStatusBarAnim()
-    self.archPanel:UpdateFromSkillIndex(archSkillIndex)
-    self.archPanel:PlayStatusBarAnim()
+    self.updatePending = false
+    self:UnregisterEvent(Labormate.Events.PLAYER_REGEN_ENABLED)
+
+    local prof1SkillIndex, prof2SkillIndex, archSkillIndex, fishSkillIndex, cookSkillIndex = GetProfessions()
+    local panels = {
+        { self.prof1Panel, prof1SkillIndex },
+        { self.prof2Panel, prof2SkillIndex },
+        { self.cookPanel, cookSkillIndex },
+        { self.fishPanel, fishSkillIndex },
+        { self.archPanel, archSkillIndex },
+    }
+
+    for _, panel in ipairs(panels) do
+        panel[1]:UpdateFromSkillIndex(panel[2])
+        panel[1]:PlayStatusBarAnim()
+    end
 end
 
 LabormateMainFrameRefreshButtonMixin = LabormateMainFrameRefreshButtonMixin or {}
@@ -108,12 +127,21 @@ local function getFirstNonNilProfessionIndex()
 end
 
 function LabormateMainFrameRefreshButtonMixin:OnClick()
+    if InCombatLockdown() then
+        print("Labormate: Profession data cannot be refreshed while in combat.")
+        return
+    end
+
     local dummyProfIndex = getFirstNonNilProfessionIndex()
     if not dummyProfIndex then
         return
     end
 
     local _, _, _, _, _, _, skillLine = GetProfessionInfo(dummyProfIndex)
+    if not skillLine then
+        return
+    end
+
     local success = C_TradeSkillUI.OpenTradeSkill(skillLine)
 
     if not success then
