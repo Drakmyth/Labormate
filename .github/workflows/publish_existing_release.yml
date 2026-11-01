@@ -49,30 +49,30 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract release
-        run: 
+        run: unzip -q "Labormate-${{ inputs.tag }}.zip"
 
       - name: Parse TOC interface
         id: parse_interface
         run: |
-          INTERFACE=$(grep -E '^## Interface:' Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
+          INTERFACE=$(grep -E '^## Interface:' Labormate/Labormate.toc | sed -E 's/## Interface:[[:space:]]*//')
           echo "interface=$INTERFACE" >> $GITHUB_OUTPUT
 
       - name: Parse TOC CurseForge id
         id: parse_curseforgeid
         run: |
-          CURSEFORGEID=$(grep -E '^## X-Curse-Project-ID:' Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
+          CURSEFORGEID=$(grep -E '^## X-Curse-Project-ID:' Labormate/Labormate.toc | sed -E 's/## X-Curse-Project-ID:[[:space:]]*//')
           echo "curseforgeid=$CURSEFORGEID" >> $GITHUB_OUTPUT
 
       - name: Parse TOC WoWInterface id
         id: parse_wowinterfaceid
         run: |
-          WOWINTERFACEID=$(grep -E '^## X-WoWI-ID:' Labormate.toc | sed -E 's/## X-WoWI-ID:[[:space:]]*//')
+          WOWINTERFACEID=$(grep -E '^## X-WoWI-ID:' Labormate/Labormate.toc | sed -E 's/## X-WoWI-ID:[[:space:]]*//')
           echo "wowinterfaceid=$WOWINTERFACEID" >> $GITHUB_OUTPUT
 
       - name: Parse TOC Wago id
         id: parse_wagoid
         run: |
-          WAGOID=$(grep -E '^## X-Wago-ID:' Labormate.toc | sed -E 's/## X-Wago-ID:[[:space:]]*//')
+          WAGOID=$(grep -E '^## X-Wago-ID:' Labormate/Labormate.toc | sed -E 's/## X-Wago-ID:[[:space:]]*//')
           echo "wagoid=$WAGOID" >> $GITHUB_OUTPUT
 
       - name: Upload package
