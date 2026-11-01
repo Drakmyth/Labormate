@@ -1,5 +1,8 @@
 # Labormate
 [![License](https://img.shields.io/github/license/Drakmyth/Labormate)](https://github.com/Drakmyth/Labormate/blob/master/LICENSE.md)
+[![CurseForge downloads](https://img.shields.io/curseforge/dt/1356290?label=CurseForge)](https://www.curseforge.com/wow/addons/labormate)
+[![WoWInterface downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.mmoui.com%2Fv3%2Fgame%2FWOW%2Ffiledetails%2F26969.json&query=%24%5B0%5D.UIHitCount&label=WoWInterface&color=blue)](https://www.wowinterface.com/downloads/info26969-Labormate.html)
+[![Wago](https://img.shields.io/badge/Wago-Addon-f58cba)](https://addons.wago.io/addons/labormate)
 
 Trying to grind profession levels but you have to keep stopping to check your progress because the profession window is too big and the skill up notices in chat are too small?
 
