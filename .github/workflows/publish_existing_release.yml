@@ -36,7 +36,7 @@ defaults:
 
 jobs:
   parse-release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       interface: ${{ steps.parse_interface.outputs.interface }}
       curseforgeid: ${{ steps.parse_curseforgeid.outputs.curseforgeid }}
@@ -76,7 +76,7 @@ jobs:
           echo "wagoid=$WAGOID" >> $GITHUB_OUTPUT
 
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package
           path: Labormate-${{ inputs.tag }}.zip
@@ -88,23 +88,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload changelog
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: changelog
           path: changelog.txt
 
   publish-curseforge:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [parse-release]
     if: ${{ inputs.publish-to-curseforge }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: changelog
 
@@ -138,17 +138,17 @@ jobs:
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
 
   publish-wowinterface:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [parse-release]
     if: ${{ inputs.publish-to-wowinterface }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: changelog
 
@@ -177,17 +177,17 @@ jobs:
           WOWINTERFACE_API_TOKEN: ${{ secrets.WOWINTERFACE_API_TOKEN }}
 
   publish-wago:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [parse-release]
     if: ${{ inputs.publish-to-wago }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: changelog
 
