@@ -38,7 +38,7 @@ defaults:
 
 jobs:
   package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       interface: ${{ steps.parse_interface.outputs.interface }}
       version: ${{ steps.parse_version.outputs.version }}
@@ -46,7 +46,7 @@ jobs:
       wowinterfaceid: ${{ steps.parse_wowinterfaceid.outputs.wowinterfaceid }}
       wagoid: ${{ steps.parse_wagoid.outputs.wagoid }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Parse TOC interface
         id: parse_interface
@@ -97,18 +97,18 @@ jobs:
           (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip Labormate/)
 
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package
           path: Labormate-${{ steps.parse_version.outputs.version }}.zip
 
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [package]
     if: ${{ inputs.publish-to-github }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
@@ -126,24 +126,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload changelog
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: ${{ !inputs.simulate }}
         with:
           name: changelog
           path: changelog.txt
 
   publish-curseforge:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [package, release]
     if: ${{ inputs.publish-to-curseforge }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         if: ${{ !inputs.simulate }}
         with:
           name: changelog
@@ -178,17 +178,17 @@ jobs:
           CURSEFORGE_API_TOKEN: ${{ secrets.CURSEFORGE_API_TOKEN }}
 
   publish-wowinterface:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [package, release]
     if: ${{ inputs.publish-to-wowinterface }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         if: ${{ !inputs.simulate }}
         with:
           name: changelog
@@ -218,17 +218,17 @@ jobs:
           WOWINTERFACE_API_TOKEN: ${{ secrets.WOWINTERFACE_API_TOKEN }}
 
   publish-wago:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [package, release]
     if: ${{ inputs.publish-to-wago }}
     steps:
       - name: Download package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: package
 
       - name: Download changelog
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         if: ${{ !inputs.simulate }}
         with:
           name: changelog
