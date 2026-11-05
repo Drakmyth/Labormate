@@ -28,6 +28,14 @@ function LabormateMainFrameMixin:OnLoad()
 end
 
 function LabormateMainFrameMixin:InitializeExpansionDropdownMenu()
+    self.RefreshButton:SetShown(Labormate.client:CanRefreshProfessionData())
+
+    local expansions = Labormate.client:GetAvailableExpansions()
+    self.ExpansionDropdown:SetShown(#expansions > 0)
+    if #expansions == 0 then
+        return
+    end
+
     self.ExpansionDropdown:SetDefaultText("Select an Expansion")
     self.ExpansionDropdown:SetupMenu(function(_, rootDescription)
         rootDescription:CreateTitle("Expansion")
@@ -35,11 +43,8 @@ function LabormateMainFrameMixin:InitializeExpansionDropdownMenu()
         local function IsSelected(index) return index == LabormateDB.selectedExpansion; end
         local function SetSelected(index) self:OnExpansionDropdownOptionSelected(index); end
 
-        for expansion = LE_EXPANSION_CLASSIC, LE_EXPANSION_LEVEL_CURRENT do
-            local expansionName = _G["EXPANSION_NAME" .. expansion]
-            if expansionName then
-                rootDescription:CreateRadio(expansionName, IsSelected, SetSelected, expansion)
-            end
+        for _, expansion in ipairs(expansions) do
+            rootDescription:CreateRadio(expansion.name, IsSelected, SetSelected, expansion.id)
         end
     end)
 end
@@ -104,18 +109,12 @@ function LabormateMainFrameMixin:UpdateStatusBars()
     self.updatePending = false
     self:UnregisterEvent(Labormate.Events.PLAYER_REGEN_ENABLED)
 
-    local prof1SkillIndex, prof2SkillIndex, archSkillIndex, fishSkillIndex, cookSkillIndex = GetProfessions()
-    local panels = {
-        { self.prof1Panel, prof1SkillIndex },
-        { self.prof2Panel, prof2SkillIndex },
-        { self.cookPanel, cookSkillIndex },
-        { self.fishPanel, fishSkillIndex },
-        { self.archPanel, archSkillIndex },
-    }
+    local panels = { self.prof1Panel, self.prof2Panel, self.cookPanel, self.fishPanel, self.archPanel }
+    local professionSlots = Labormate.client:GetProfessionSlots()
 
-    for _, panel in ipairs(panels) do
-        panel[1]:UpdateFromSkillIndex(panel[2])
-        panel[1]:PlayStatusBarAnim()
+    for index, panel in ipairs(panels) do
+        panel:UpdateFromSkillIndex(professionSlots[index])
+        panel:PlayStatusBarAnim()
     end
 end
 
@@ -137,17 +136,9 @@ function LabormateMainFrameRefreshButtonMixin:OnClick()
         return
     end
 
-    local _, _, _, _, _, _, skillLine = GetProfessionInfo(dummyProfIndex)
-    if not skillLine then
-        return
-    end
-
-    local success = C_TradeSkillUI.OpenTradeSkill(skillLine)
-
+    local success = Labormate.client:RefreshProfessionData(dummyProfIndex)
     if not success then
         print("Labormate: Unable to auto-parse profession data. Please open one of the profession books to force load.")
-    else
-        C_TradeSkillUI.CloseTradeSkill()
     end
 
     Labormate.mainFrame:UpdateStatusBars()

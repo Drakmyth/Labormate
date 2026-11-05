@@ -12,7 +12,7 @@ Labormate is a simple, small window that shows progress bars for each of your pr
 
 1. Download the latest release from the [Releases page](https://github.com/Drakmyth/Labormate/releases)
 1. Navigate to your World of Warcraft installation directory
-1. Extract the release archive into the `_retail_\Interface\AddOns` directory
+1. Extract the release archive into the `_retail_\Interface\AddOns` or `_forever_\Interface\AddOns` directory
 1. Start World of Warcraft and make sure `Labormate` is checked in the AddOns menu
 
 ## Usage
@@ -31,7 +31,7 @@ You can quickly access any profession-related abilities by left or right clickin
 If you come across something that seems like a bug, please report it here. Make sure to follow these guidelines to ensure your report isn't closed as "Invalid":
 
 * Make sure you are using the latest Release version of the addon. Old versions of addons are unsupported. Features and fixes will not be backported to old versions.
-* Currently this addon is only supported on the retail version of World of Warcraft. It has not been tested and is unsupported on World of Warcraft Classic or any other variation of the game.
+* This addon supports World of Warcraft Retail and World of Warcraft Forever. It has not been tested and is unsupported on World of Warcraft Classic or other variations of the game.
 * Search to see if someone else has already reported the bug. Duplicate reports just slow down getting things fixed.
 * Include steps to reproduce the issue in your report. Screenshots or videos may also prove helpful.
 

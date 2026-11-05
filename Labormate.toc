@@ -1,4 +1,4 @@
-## Interface: 120105
+## Interface: 120105, 16001
 ## Version: 1.0.120105.0
 ## Author: Drakmyth
 ## Title: Labormate
@@ -16,6 +16,11 @@
 
 # Init
 Labormate.lua
+
+# Clients
+Clients/Client.lua
+Clients/Retail.lua
+Clients/Forever.lua
 
 # Mixins
 LabormateProfessionBadgeMixin.lua
