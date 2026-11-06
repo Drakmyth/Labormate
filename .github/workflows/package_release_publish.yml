@@ -93,7 +93,7 @@ jobs:
         run: |
           mkdir -p release/Labormate
           cp *.lua *.toc *.xml release/Labormate/
-          cp -r assets/ Clients/ release/Labormate/
+          cp -r assets/ clients/ release/Labormate/
           (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip Labormate/)
 
       - name: Upload package

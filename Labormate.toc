@@ -18,9 +18,9 @@
 Labormate.lua
 
 # Clients
-Clients/Client.lua
-Clients/Retail.lua
-Clients/Forever.lua
+clients/Client.lua
+clients/Retail.lua
+clients/Forever.lua
 
 # Mixins
 LabormateProfessionBadgeMixin.lua
