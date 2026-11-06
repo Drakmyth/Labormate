@@ -244,6 +244,8 @@ function Labormate_OnAddonCompartmentClick(addOnName, button)
 end
 
 local function initializeDB()
+    Labormate.client = LabormateClient:Select()
+
     local defaults = {
         selectedExpansion = LE_EXPANSION_LEVEL_CURRENT,
         isOpen = false,

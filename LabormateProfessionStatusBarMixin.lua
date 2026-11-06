@@ -8,6 +8,10 @@ local function getEnglishBaseProfessionName(professionInfo)
         return nil
     end
 
+    if professionInfo.baseProfessionName then
+        return professionInfo.baseProfessionName
+    end
+
     local professions = tInvert(Enum.Profession)
     local name = professions[professionInfo.profession]
 
@@ -146,9 +150,12 @@ function LabormateProfessionStatusBarMixin:OnEnter()
             GameTooltip:AddLine("|cffff0000" .. "Visit a trainer to learn this skill." .. "|r")
         end
 
-        local expansionName = _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion] or UNKNOWN
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("Expansion: " .. expansionName)
+        local expansions = Labormate.client:GetAvailableExpansions()
+        if #expansions > 0 then
+            local expansionName = _G["EXPANSION_NAME" .. LabormateDB.selectedExpansion] or UNKNOWN
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine("Expansion: " .. expansionName)
+        end
 
         if self.professionInfo.maxSkillLevel > 0 then
             GameTooltip:AddLine("Progress: " .. getColoredSkillText(self.professionInfo.skillLevel, self.professionInfo.maxSkillLevel, "ffffff") .. "/|cffffffff" .. self.professionInfo.maxSkillLevel .. "|r")

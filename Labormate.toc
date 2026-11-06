@@ -1,5 +1,5 @@
-## Interface: 120105
-## Version: 1.0.120105.0
+## Interface: 120105, 16001
+## Version: 1.1.0
 ## Author: Drakmyth
 ## Title: Labormate
 ## IconTexture: Interface/Icons/ability_racial_jackofalltrades
@@ -16,6 +16,11 @@
 
 # Init
 Labormate.lua
+
+# Clients
+clients/Client.lua
+clients/Retail.lua
+clients/Forever.lua
 
 # Mixins
 LabormateProfessionBadgeMixin.lua

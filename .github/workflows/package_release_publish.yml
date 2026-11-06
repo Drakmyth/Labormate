@@ -93,7 +93,7 @@ jobs:
         run: |
           mkdir -p release/Labormate
           cp *.lua *.toc *.xml release/Labormate/
-          cp -r assets/ release/Labormate/assets/
+          cp -r assets/ clients/ release/Labormate/
           (cd release && zip -r ../Labormate-${{ steps.parse_version.outputs.version }}.zip Labormate/)
 
       - name: Upload package
@@ -154,10 +154,10 @@ jobs:
           INTERFACE="${{ needs.package.outputs.interface }}"
           curl -s -f -X GET "https://wow.curseforge.com/api/game/versions" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
-          VERSIONID=$(jq \
+          VERSIONIDS=$(jq \
             --arg interface "$INTERFACE" \
-            -r '.[] | select(.apiVersion == $interface) | .id' versions.json)
-          echo "versionid=$VERSIONID" >> $GITHUB_OUTPUT
+            -c '[.[] | select(.apiVersion as $version | ($interface | split(", ") | index($version))) | .id]' versions.json)
+          echo "versionids=$VERSIONIDS" >> $GITHUB_OUTPUT
 
       - name: Publish to CurseForge
         if: ${{ !inputs.simulate }}
@@ -167,7 +167,7 @@ jobs:
             --arg changelog "$CHANGELOG" \
             --arg changelog_type "markdown" \
             --arg display_name "${{ needs.package.outputs.version }}" \
-            --argjson game_versions "[${{ steps.retrieve_versionid.outputs.versionid }}]" \
+            --argjson game_versions '${{ steps.retrieve_versionid.outputs.versionids }}' \
             --arg release_type "release" \
             '{changelog: $changelog, changelogType: $changelog_type, displayName: $display_name, gameVersions: $game_versions, releaseType: $release_type}')
           curl -f -X POST "https://wow.curseforge.com/api/projects/${{ needs.package.outputs.curseforgeid }}/upload-file" \
@@ -196,7 +196,7 @@ jobs:
       - name: Retrieve game version
         id: retrieve_version
         run: |
-          INTERFACE="${{ needs.package.outputs.interface }}"
+          INTERFACE=$(echo "${{ needs.package.outputs.interface }}" | cut -d',' -f1 | xargs)
           curl -s -f -X GET "https://api.wowinterface.com/addons/compatible.json" > versions.json
           VERSION=$(jq \
             --arg interface "$INTERFACE" \
@@ -236,7 +236,7 @@ jobs:
       - name: Retrieve game version via CurseForge
         id: retrieve_version
         run: |
-          INTERFACE="${{ needs.package.outputs.interface }}"
+          INTERFACE=$(echo "${{ needs.package.outputs.interface }}" | cut -d',' -f1 | xargs)
           curl -s -f -X GET "https://wow.curseforge.com/api/game/versions" \
             -H "x-api-token: ${{ secrets.CURSEFORGE_API_TOKEN }}" > versions.json
           VERSION=$(jq \
